@@ -9,11 +9,12 @@ public class TraiDropZone : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         GameObject droppedItem = eventData.pointerDrag;
+
         if (droppedItem != null)
         {
             //ドロップされたアイテムのスプライトを取得
             Image itemImage = droppedItem.GetComponent<Image>();
-            if (itemImage != null)
+            if (itemImage != null && orderManager != null)
             {
                 //注文リストと一致するか確認
                 if (orderManager.CheckOrder(itemImage.sprite))
