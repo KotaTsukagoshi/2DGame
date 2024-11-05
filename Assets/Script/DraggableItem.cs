@@ -1,18 +1,42 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class DraggableItem : MonoBehaviour
+public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    // Start is called before the first frame update
-    void Start()
+    private RectTransform rectTransform;
+    private CanvasGroup canvasGroup;
+    private Vector3 startPosition;
+
+    void Awake()
     {
-        
+        rectTransform = GetComponent<RectTransform>();
+        canvasGroup = GetComponent<CanvasGroup>();
+        startPosition = rectTransform.position;
     }
 
-    // Update is called once per frame
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        canvasGroup.blocksRaycasts = false;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        rectTransform.anchoredPosition += eventData.delta;
+    }
+
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        canvasGroup.blocksRaycasts = true;
+        rectTransform.position = startPosition; // ドロップ失敗で元の位置に戻す
+    }
+    void Start()
+    {
+
+    }
+
     void Update()
     {
-        
+
     }
 }
