@@ -1,16 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    void Start()
+    public OrderManager orderManager;
+
+    public void CheckOrder(string selectedItem)
     {
-
-    }
-
-    void Update()
-    {
-
+        string currentOrder = orderManager.GetCurrentOrder();
+        if (selectedItem == currentOrder)
+        {
+            Debug.Log("ê≥ÇµÇ¢íçï∂Ç≈Ç∑ÅI");
+            orderManager.GenerateOrder();
+        }
+        else
+        {
+            Debug.Log("ä‘à·Ç¡ÇΩíçï∂Ç≈Ç∑ÅI");
+        }
     }
 }
