@@ -4,41 +4,41 @@ using System.Collections.Generic;
 
 public class OrderManager : MonoBehaviour
 {
-    // itemSprites: ƒQ[ƒ€“à‚Å—˜—p‰Â”\‚È‘S‚Ä‚ÌƒAƒCƒeƒ€‚ÌƒXƒvƒ‰ƒCƒgƒŠƒXƒg
+    // itemSprites: ã‚²ãƒ¼ãƒ å†…ã§åˆ©ç”¨å¯èƒ½ãªå…¨ã¦ã®ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒªã‚¹ãƒˆ
     public List<Sprite> itemSprites;
 
-    // orderImages: ’•¶ƒAƒCƒeƒ€‚ğ•\¦‚·‚é‚½‚ß‚ÌUI ImageƒŠƒXƒg
+    // orderImages: æ³¨æ–‡ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¡¨ç¤ºã™ã‚‹ãŸã‚ã®UI Imageãƒªã‚¹ãƒˆ
     public List<Image> orderImages;
 
-    // currentOrder: Œ»İ‚Ì’•¶‚Æ‚µ‚Ä•K—v‚ÈƒAƒCƒeƒ€‚ÌƒXƒvƒ‰ƒCƒgƒŠƒXƒg
+    // currentOrder: ç¾åœ¨ã®æ³¨æ–‡ã¨ã—ã¦å¿…è¦ãªã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãƒªã‚¹ãƒˆ
     private List<Sprite> currentOrder = new List<Sprite>();
 
     void Start()
     {
-        // ƒQ[ƒ€ŠJn‚ÉÅ‰‚Ì’•¶‚ğ¶¬
+        // ã‚²ãƒ¼ãƒ é–‹å§‹æ™‚ã«æœ€åˆã®æ³¨æ–‡ã‚’ç”Ÿæˆ
         GenerateOrder();
     }
 
-    // Œ»İ‚Ì’•¶‚ğ¶¬‚µAUI‚Éƒ‰ƒ“ƒ_ƒ€‚ÉƒAƒCƒeƒ€‚ğ•\¦‚·‚éƒƒ\ƒbƒh
+    // ç¾åœ¨ã®æ³¨æ–‡ã‚’ç”Ÿæˆã—ã€UIã«ãƒ©ãƒ³ãƒ€ãƒ ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¡¨ç¤ºã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     public void GenerateOrder()
     {
-        // ‘O‚Ì’•¶‚ğƒNƒŠƒA‚µAV‚µ‚¢’•¶ƒAƒCƒeƒ€ƒŠƒXƒg‚ğì¬
+        // å‰ã®æ³¨æ–‡ã‚’ã‚¯ãƒªã‚¢ã—ã€æ–°ã—ã„æ³¨æ–‡ã‚¢ã‚¤ãƒ†ãƒ ãƒªã‚¹ãƒˆã‚’ä½œæˆ
         currentOrder.Clear();
 
-        // orderImages‚Ì”‚¾‚¯ƒ‰ƒ“ƒ_ƒ€‚ÈƒAƒCƒeƒ€‚ğ‘I‚ñ‚ÅA’•¶ƒŠƒXƒg‚ÆUI‚Éİ’è
+        // orderImagesã®æ•°ã ã‘ãƒ©ãƒ³ãƒ€ãƒ ãªã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸ã‚“ã§ã€æ³¨æ–‡ãƒªã‚¹ãƒˆã¨UIã«è¨­å®š
         for (int i = 0; i < orderImages.Count; i++)
         {
-            // itemSprites‚©‚çƒ‰ƒ“ƒ_ƒ€‚ÉƒAƒCƒeƒ€‚ğ‘I‘ğ‚µAcurrentOrder‚ÆorderImages‚É’Ç‰Á
+            // itemSpritesã‹ã‚‰ãƒ©ãƒ³ãƒ€ãƒ ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠã—ã€currentOrderã¨orderImagesã«è¿½åŠ 
             Sprite randomItem = itemSprites[Random.Range(0, itemSprites.Count)];
             currentOrder.Add(randomItem);
             orderImages[i].sprite = randomItem;
-            orderImages[i].enabled = true; // UI—v‘f‚ğ•\¦‚·‚é
+            orderImages[i].enabled = true; // UIè¦ç´ ã‚’è¡¨ç¤ºã™ã‚‹
         }
     }
 
-    // ƒvƒŒƒCƒ„[‚ªƒgƒŒ[‚Éæ‚¹‚½ƒAƒCƒeƒ€‚ª’•¶ƒŠƒXƒg‚É‚ ‚é‚©‚ğŠm”F‚·‚éƒƒ\ƒbƒh
-    // itemSprite: ƒvƒŒƒCƒ„[‚ª”[•i‚µ‚æ‚¤‚Æ‚µ‚½ƒAƒCƒeƒ€‚ÌƒXƒvƒ‰ƒCƒg
-    // –ß‚è’l: ’•¶ƒŠƒXƒg‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚ê‚ÎtrueAŠÜ‚Ü‚ê‚Ä‚¢‚È‚¯‚ê‚Îfalse
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒãƒˆãƒ¬ãƒ¼ã«ä¹—ã›ãŸã‚¢ã‚¤ãƒ†ãƒ ãŒæ³¨æ–‡ãƒªã‚¹ãƒˆã«ã‚ã‚‹ã‹ã‚’ç¢ºèªã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+    // itemSprite: ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒç´å“ã—ã‚ˆã†ã¨ã—ãŸã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
+    // æˆ»ã‚Šå€¤: æ³¨æ–‡ãƒªã‚¹ãƒˆã«å«ã¾ã‚Œã¦ã„ã‚Œã°trueã€å«ã¾ã‚Œã¦ã„ãªã‘ã‚Œã°false
     public bool CheckOrder(Sprite itemSprite)
     {
         return currentOrder.Contains(itemSprite);

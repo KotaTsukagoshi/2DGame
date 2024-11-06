@@ -4,47 +4,47 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(RectTransform), typeof(CanvasGroup))]
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    // RectTransform: UIƒAƒCƒeƒ€‚ÌˆÊ’u‚âƒTƒCƒY‚Ì’²®‚ğ‚·‚é‚½‚ß‚Ég—p
+    // RectTransform: UIã‚¢ã‚¤ãƒ†ãƒ ã®ä½ç½®ã‚„ã‚µã‚¤ã‚ºã®èª¿æ•´ã‚’ã™ã‚‹ãŸã‚ã«ä½¿ç”¨
     private RectTransform rectTransform;
-    // CanvasGroup: ƒhƒ‰ƒbƒO’†‚É‘¼‚ÌƒIƒuƒWƒFƒNƒg‚Æ‚ÌÕ“Ë”»’è‚ğƒRƒ“ƒgƒ[ƒ‹‚·‚é‚½‚ß‚Ég—p
+    // CanvasGroup: ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã«ä»–ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã®è¡çªåˆ¤å®šã‚’ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã™ã‚‹ãŸã‚ã«ä½¿ç”¨
     private CanvasGroup canvasGroup;
-    // startPosition: ƒhƒ‰ƒbƒO‚ªI—¹‚µ‚½Û‚ÉƒAƒCƒeƒ€‚ğŒ³‚ÌˆÊ’u‚É–ß‚·‚½‚ß‚Ì‰ŠúˆÊ’u‚ğ•Û‘¶
+    // startPosition: ãƒ‰ãƒ©ãƒƒã‚°ãŒçµ‚äº†ã—ãŸéš›ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’å…ƒã®ä½ç½®ã«æˆ»ã™ãŸã‚ã®åˆæœŸä½ç½®ã‚’ä¿å­˜
     private Vector3 startPosition;
 
     void Awake()
     {
-        // RectTransform ‚Æ CanvasGroup ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌQÆ‚ğæ“¾
+        // RectTransform ã¨ CanvasGroup ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å‚ç…§ã‚’å–å¾—
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
 
-        // ƒAƒCƒeƒ€‚Ì‰ŠúˆÊ’u‚ğ‹L˜^‚µ‚Ä‚¨‚­
+        // ã‚¢ã‚¤ãƒ†ãƒ ã®åˆæœŸä½ç½®ã‚’è¨˜éŒ²ã—ã¦ãŠã
         startPosition = rectTransform.position;
     }
 
-    // ƒhƒ‰ƒbƒO‚ªŠJn‚³‚ê‚½Û‚ÉŒÄ‚Î‚ê‚éƒƒ\ƒbƒh
+    // ãƒ‰ãƒ©ãƒƒã‚°ãŒé–‹å§‹ã•ã‚ŒãŸéš›ã«å‘¼ã°ã‚Œã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     public void OnBeginDrag(PointerEventData eventData)
     {
-        // ƒhƒ‰ƒbƒO’†‚Í‘¼‚ÌƒIƒuƒWƒFƒNƒg‚Æ‚ÌÕ“Ë”»’è‚ğ–³Œø‰»‚·‚é
-        // i‚±‚ê‚É‚æ‚èA‘¼‚Ì UI —v‘f‚ª‚±‚ÌƒAƒCƒeƒ€‚Ì”wŒã‚Åó‚¯æ‚ê‚é‚æ‚¤‚É‚È‚éj
+        // ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã¯ä»–ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã®è¡çªåˆ¤å®šã‚’ç„¡åŠ¹åŒ–ã™ã‚‹
+        // ï¼ˆã“ã‚Œã«ã‚ˆã‚Šã€ä»–ã® UI è¦ç´ ãŒã“ã®ã‚¢ã‚¤ãƒ†ãƒ ã®èƒŒå¾Œã§å—ã‘å–ã‚Œã‚‹ã‚ˆã†ã«ãªã‚‹ï¼‰
         canvasGroup.blocksRaycasts = false;
     }
 
-    // ƒhƒ‰ƒbƒO’†‚ÉŒÄ‚Î‚ê‘±‚¯‚éƒƒ\ƒbƒh
+    // ãƒ‰ãƒ©ãƒƒã‚°ä¸­ã«å‘¼ã°ã‚Œç¶šã‘ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     public void OnDrag(PointerEventData eventData)
     {
-        // ƒhƒ‰ƒbƒO‚É‰‚¶‚ÄƒAƒCƒeƒ€‚ÌˆÊ’u‚ğXV
-        // anchoredPosition ‚ÍeƒIƒuƒWƒFƒNƒg‚ÌÀ•WŒn‚É‚¨‚¯‚é‘Š‘Î“I‚ÈˆÊ’u
+        // ãƒ‰ãƒ©ãƒƒã‚°ã«å¿œã˜ã¦ã‚¢ã‚¤ãƒ†ãƒ ã®ä½ç½®ã‚’æ›´æ–°
+        // anchoredPosition ã¯è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åº§æ¨™ç³»ã«ãŠã‘ã‚‹ç›¸å¯¾çš„ãªä½ç½®
         rectTransform.anchoredPosition += eventData.delta;
     }
 
-    // ƒhƒ‰ƒbƒO‚ªI—¹‚µ‚½Û‚ÉŒÄ‚Î‚ê‚éƒƒ\ƒbƒh
+    // ãƒ‰ãƒ©ãƒƒã‚°ãŒçµ‚äº†ã—ãŸéš›ã«å‘¼ã°ã‚Œã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     public void OnEndDrag(PointerEventData eventData)
     {
-        // ƒhƒ‰ƒbƒO‚ªI—¹‚µ‚½‚½‚ßA‘¼‚ÌƒIƒuƒWƒFƒNƒg‚Æ‚ÌÕ“Ë”»’è‚ğÄ‚Ñ—LŒø‰»
+        // ãƒ‰ãƒ©ãƒƒã‚°ãŒçµ‚äº†ã—ãŸãŸã‚ã€ä»–ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã®è¡çªåˆ¤å®šã‚’å†ã³æœ‰åŠ¹åŒ–
         canvasGroup.blocksRaycasts = true;
 
-        // ƒAƒCƒeƒ€‚ğŒ³‚ÌˆÊ’u‚É–ß‚·
-        // ‚±‚ê‚É‚æ‚èAƒhƒƒbƒv‚ª¸”s‚µ‚½ê‡‚ÉƒAƒCƒeƒ€‚ª‰ŠúˆÊ’u‚ÉƒŠƒZƒbƒg‚³‚ê‚é
+        // ã‚¢ã‚¤ãƒ†ãƒ ã‚’å…ƒã®ä½ç½®ã«æˆ»ã™
+        // ã“ã‚Œã«ã‚ˆã‚Šã€ãƒ‰ãƒ­ãƒƒãƒ—ãŒå¤±æ•—ã—ãŸå ´åˆã«ã‚¢ã‚¤ãƒ†ãƒ ãŒåˆæœŸä½ç½®ã«ãƒªã‚»ãƒƒãƒˆã•ã‚Œã‚‹
         rectTransform.position = startPosition;
     }
 }
