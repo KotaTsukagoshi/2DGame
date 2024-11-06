@@ -2,30 +2,41 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TraiDropZone : MonoBehaviour, IDropHandler
+public class TrayDropZone : MonoBehaviour, IDropHandler
 {
+    // orderManager: 注文アイテムを管理する OrderManager への参照
     public OrderManager orderManager;
 
+    // ドラッグされているアイテムがこのドロップゾーンにドロップされたときに呼ばれるメソッド
+    // eventData: ドロップされたアイテムのイベントデータ
     public void OnDrop(PointerEventData eventData)
     {
+        // ドロップされたゲームオブジェクトを取得
         GameObject droppedItem = eventData.pointerDrag;
 
+        // ドロップされたアイテムが存在するか確認
         if (droppedItem != null)
         {
-            //ドロップされたアイテムのスプライトを取得
+            // ドロップされたアイテムの Image コンポーネントを取得
             Image itemImage = droppedItem.GetComponent<Image>();
+
+            // アイテムが Image コンポーネントを持っているか、orderManager が設定されているかを確認
             if (itemImage != null && orderManager != null)
             {
-                //注文リストと一致するか確認
+                // アイテムのスプライトが注文リスト内に存在するかチェック
                 if (orderManager.CheckOrder(itemImage.sprite))
                 {
                     Debug.Log("納品完了！");
-                    Destroy(droppedItem);//正しく納品されたのでアイテム削除
+                    Destroy(droppedItem); // 正しいアイテムが納品された場合、アイテムを削除
+                }
+                else
+                {
+                    Debug.Log("間違ったアイテムが納品されました！");
                 }
             }
             else
             {
-                Debug.Log("間違ったアイテムが納品されました！");
+                Debug.LogWarning("アイテムにImageコンポーネントが存在しないか、OrderManagerが未設定です");
             }
         }
     }
