@@ -4,39 +4,39 @@ using UnityEngine.UI;
 
 public class TrayDropZone : MonoBehaviour, IDropHandler
 {
-    // orderManager: ’•¶ƒAƒCƒeƒ€‚ğŠÇ—‚·‚é OrderManager ‚Ö‚ÌQÆ
+    // orderManager: æ³¨æ–‡ã‚¢ã‚¤ãƒ†ãƒ ã‚’ç®¡ç†ã™ã‚‹ OrderManager ã¸ã®å‚ç…§
     public OrderManager orderManager;
 
-    // ƒhƒ‰ƒbƒO‚³‚ê‚Ä‚¢‚éƒAƒCƒeƒ€‚ª‚±‚Ìƒhƒƒbƒvƒ][ƒ“‚Éƒhƒƒbƒv‚³‚ê‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚éƒƒ\ƒbƒh
-    // eventData: ƒhƒƒbƒv‚³‚ê‚½ƒAƒCƒeƒ€‚ÌƒCƒxƒ“ƒgƒf[ƒ^
+    // ãƒ‰ãƒ©ãƒƒã‚°ã•ã‚Œã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ãŒã“ã®ãƒ‰ãƒ­ãƒƒãƒ—ã‚¾ãƒ¼ãƒ³ã«ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸã¨ãã«å‘¼ã°ã‚Œã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+    // eventData: ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒ‡ãƒ¼ã‚¿
     public void OnDrop(PointerEventData eventData)
     {
-        // ƒhƒƒbƒv‚³‚ê‚½ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğæ“¾
+        // ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
         GameObject droppedItem = eventData.pointerDrag;
 
-        // ƒhƒƒbƒv‚³‚ê‚½ƒAƒCƒeƒ€‚ª‘¶İ‚·‚é‚©Šm”F
+        // ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ãŒå­˜åœ¨ã™ã‚‹ã‹ç¢ºèª
         if (droppedItem != null)
         {
-            // ƒhƒƒbƒv‚³‚ê‚½ƒAƒCƒeƒ€‚Ì Image ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾
+            // ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã® Image ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—
             Image itemImage = droppedItem.GetComponent<Image>();
 
-            // ƒAƒCƒeƒ€‚ª Image ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ‚Á‚Ä‚¢‚é‚©AorderManager ‚ªİ’è‚³‚ê‚Ä‚¢‚é‚©‚ğŠm”F
+            // ã‚¢ã‚¤ãƒ†ãƒ ãŒ Image ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æŒã£ã¦ã„ã‚‹ã‹ã€orderManager ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹ã‹ã‚’ç¢ºèª
             if (itemImage != null && orderManager != null)
             {
-                // ƒAƒCƒeƒ€‚ÌƒXƒvƒ‰ƒCƒg‚ª’•¶ƒŠƒXƒg“à‚É‘¶İ‚·‚é‚©ƒ`ƒFƒbƒN
+                // ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆãŒæ³¨æ–‡ãƒªã‚¹ãƒˆå†…ã«å­˜åœ¨ã™ã‚‹ã‹ãƒã‚§ãƒƒã‚¯!
                 if (orderManager.CheckOrder(itemImage.sprite))
                 {
-                    Debug.Log("”[•iŠ®—¹I");
-                    Destroy(droppedItem); // ³‚µ‚¢ƒAƒCƒeƒ€‚ª”[•i‚³‚ê‚½ê‡AƒAƒCƒeƒ€‚ğíœ
+                    Debug.Log("ç´å“å®Œäº†ï¼");
+                    Destroy(droppedItem); // æ­£ã—ã„ã‚¢ã‚¤ãƒ†ãƒ ãŒç´å“ã•ã‚ŒãŸå ´åˆã€ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤
                 }
                 else
                 {
-                    Debug.Log("ŠÔˆá‚Á‚½ƒAƒCƒeƒ€‚ª”[•i‚³‚ê‚Ü‚µ‚½I");
+                    Debug.Log("é–“é•ã£ãŸã‚¢ã‚¤ãƒ†ãƒ ãŒç´å“ã•ã‚Œã¾ã—ãŸï¼");
                 }
             }
             else
             {
-                Debug.LogWarning("ƒAƒCƒeƒ€‚ÉImageƒRƒ“ƒ|[ƒlƒ“ƒg‚ª‘¶İ‚µ‚È‚¢‚©AOrderManager‚ª–¢İ’è‚Å‚·");
+                Debug.LogWarning("ã‚¢ã‚¤ãƒ†ãƒ ã«Imageã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒå­˜åœ¨ã—ãªã„ã‹ã€OrderManagerãŒæœªè¨­å®šã§ã™");
             }
         }
     }
