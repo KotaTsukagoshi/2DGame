@@ -22,17 +22,23 @@ public class OrderManager : MonoBehaviour
     // 現在の注文を生成し、UIにランダムにアイテムを表示するメソッド
     public void GenerateOrder()
     {
-        // 前の注文をクリアし、新しい注文アイテムリストを作成
         currentOrder.Clear();
 
-        // orderImagesの数だけランダムなアイテムを選んで、注文リストとUIに設定
+        // 手持ちアイテムを固定順で表示
         for (int i = 0; i < orderImages.Count; i++)
         {
-            // itemSpritesからランダムにアイテムを選択し、currentOrderとorderImagesに追加
-            Sprite randomItem = itemSprites[Random.Range(0, itemSprites.Count)];
-            currentOrder.Add(randomItem);
-            orderImages[i].sprite = randomItem;
-            orderImages[i].enabled = true; // UI要素を表示する
+            // 手持ちアイテムリスト内に十分なアイテムがあるか確認
+            if (i < itemSprites.Count)
+            {
+                Sprite item = itemSprites[i]; // 順番にアイテムを取得
+                currentOrder.Add(item);
+                orderImages[i].sprite = item;
+                orderImages[i].enabled = true;
+            }
+            else
+            {
+                orderImages[i].enabled = false; // リストが足りない場合は空白に
+            }
         }
     }
 

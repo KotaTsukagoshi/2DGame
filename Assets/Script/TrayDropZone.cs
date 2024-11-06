@@ -23,11 +23,10 @@ public class TrayDropZone : MonoBehaviour, IDropHandler
             // アイテムが Image コンポーネントを持っているか、orderManager が設定されているかを確認
             if (itemImage != null && orderManager != null)
             {
-                // アイテムのスプライトが注文リスト内に存在するかチェック!
+                // アイテムのスプライトが注文リスト内に存在するかチェック
                 if (orderManager.CheckOrder(itemImage.sprite))
                 {
                     Debug.Log("納品完了！");
-                    Destroy(droppedItem); // 正しいアイテムが納品された場合、アイテムを削除
                 }
                 else
                 {
