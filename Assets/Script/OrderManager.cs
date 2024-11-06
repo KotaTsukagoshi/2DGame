@@ -80,6 +80,9 @@ public class OrderManager : MonoBehaviour
                 // 注文リストにアイテムが残っていない場合は、スロットを非表示にする
                 orderSlots[i].enabled = false;
             }
+
+            GenerateOrder();
+
         }
     }
 }

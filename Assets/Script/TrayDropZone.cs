@@ -33,10 +33,6 @@ public class TrayDropZone : MonoBehaviour, IDropHandler
                     Debug.Log("間違ったアイテムが納品されました！");
                 }
             }
-            else
-            {
-                Debug.LogWarning("アイテムにImageコンポーネントが存在しないか、OrderManagerが未設定です");
-            }
         }
     }
 }
