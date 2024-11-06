@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 public class OrderManager : MonoBehaviour
 {
-    // itemSprites: ゲーム内で利用可能な全てのアイテムのスプライトリスト
-    public List<Sprite> itemSprites;
+    // 納品に必要なアイテムの候補リスト（可能なすべてのアイテム）
+    public List<Sprite> possibleItems;
 
-    // orderImages: 注文アイテムを表示するためのUI Imageリスト
-    public List<Image> orderImages;
+    // OrderPanel 内の注文スロット（UIのImage要素）
+    public List<Image> orderSlots;
 
-    // currentOrder: 現在の注文として必要なアイテムのスプライトリスト
-    private List<Sprite> currentOrder = new List<Sprite>();
+    // 現在の注文アイテムリスト（プレイヤーが納品すべきアイテム）
+    private List<Sprite> currentOrderItems = new List<Sprite>();
 
     void Start()
     {
@@ -19,34 +19,67 @@ public class OrderManager : MonoBehaviour
         GenerateOrder();
     }
 
-    // 現在の注文を生成し、UIにランダムにアイテムを表示するメソッド
+    // 現在の注文を生成し、注文スロットに表示するメソッド
+    // ランダムにアイテムを選んで注文リストを作成
     public void GenerateOrder()
     {
-        currentOrder.Clear();
+        // 現在の注文リストをクリア
+        currentOrderItems.Clear();
 
-        // 手持ちアイテムを固定順で表示
-        for (int i = 0; i < orderImages.Count; i++)
+        // 注文スロットの数だけ繰り返し、ランダムにアイテムを選んで設定
+        for (int i = 0; i < orderSlots.Count; i++)
         {
-            // 手持ちアイテムリスト内に十分なアイテムがあるか確認
-            if (i < itemSprites.Count)
-            {
-                Sprite item = itemSprites[i]; // 順番にアイテムを取得
-                currentOrder.Add(item);
-                orderImages[i].sprite = item;
-                orderImages[i].enabled = true;
-            }
-            else
-            {
-                orderImages[i].enabled = false; // リストが足りない場合は空白に
-            }
+            // 納品候補リストからランダムにアイテムを選択
+            Sprite randomItem = possibleItems[Random.Range(0, possibleItems.Count)];
+
+            // 現在の注文アイテムリストに追加
+            currentOrderItems.Add(randomItem);
+
+            // 注文スロットにアイテムのスプライトを設定し表示
+            orderSlots[i].sprite = randomItem;
+            orderSlots[i].enabled = true;
         }
     }
 
-    // プレイヤーがトレーに乗せたアイテムが注文リストにあるかを確認するメソッド
-    // itemSprite: プレイヤーが納品しようとしたアイテムのスプライト
-    // 戻り値: 注文リストに含まれていればtrue、含まれていなければfalse
+    // プレイヤーが納品しようとしたアイテムが注文リストにあるかを確認するメソッド
+    // itemSprite: プレイヤーが納品したアイテムのスプライト
+    // 戻り値: アイテムが注文リストに含まれていればtrue、それ以外はfalse
     public bool CheckOrder(Sprite itemSprite)
     {
-        return currentOrder.Contains(itemSprite);
+        // 注文リストにアイテムがあれば、それをリストから削除
+        if (currentOrderItems.Contains(itemSprite))
+        {
+            // 正しいアイテムが納品された場合
+            currentOrderItems.Remove(itemSprite);
+
+            // 注文パネルを更新（表示されるアイテムを減らす）
+            UpdateOrderPanel();
+
+            return true;
+        }
+
+        // 間違ったアイテムが納品された場合
+        return false;
+    }
+
+    // 注文リストを更新するメソッド
+    // まだ納品されていないアイテムを注文スロットに再設定し、納品済みアイテムを非表示にする
+    private void UpdateOrderPanel()
+    {
+        // 注文スロットの数だけ繰り返す
+        for (int i = 0; i < orderSlots.Count; i++)
+        {
+            // 注文リストのアイテムがまだ残っている場合は、それを表示
+            if (i < currentOrderItems.Count)
+            {
+                orderSlots[i].sprite = currentOrderItems[i];
+                orderSlots[i].enabled = true;
+            }
+            else
+            {
+                // 注文リストにアイテムが残っていない場合は、スロットを非表示にする
+                orderSlots[i].enabled = false;
+            }
+        }
     }
 }
