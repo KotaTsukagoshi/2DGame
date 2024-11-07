@@ -7,6 +7,8 @@ public class Customer : MonoBehaviour
     public Image customerImage; // 顧客の画像
     public List<Sprite> orderItems; // 顧客ごとの注文アイテムリスト
     public List<Image> orderSlots; // UI上で注文を表示するスロット
+    public TrayDropZone trayDropZone; // ドロップトレイの参照
+
 
     // 顧客の注文を表示
     public void DisplayOrder()
