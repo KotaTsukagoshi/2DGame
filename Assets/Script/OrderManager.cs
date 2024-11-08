@@ -8,6 +8,10 @@ public class OrderManager : MonoBehaviour
     public List<Customer> customerPrefabs; // 生成可能な顧客のプレハブリスト
     public Transform customerSpawnPoint; // 顧客が表示される場所
 
+    // カスタマーのスポーン範囲を指定するためのフィールド
+    public Transform spawnAreaTopLeft;    // スポーン範囲の左上
+    public Transform spawnAreaBottomRight; // スポーン範囲の右下
+
     private Customer currentCustomer;
 
     void Start()
@@ -20,14 +24,21 @@ public class OrderManager : MonoBehaviour
     {
         if (currentCustomer != null)
         {
-            Destroy(currentCustomer.gameObject);
+            Destroy(currentCustomer.gameObject); // 現在の顧客を削除
         }
 
+        // ランダムな位置を計算
+        Vector3 randomPosition = new Vector3(
+            Random.Range(spawnAreaTopLeft.position.x, spawnAreaBottomRight.position.x),
+            Random.Range(spawnAreaBottomRight.position.y, spawnAreaTopLeft.position.y),
+            0 // Z位置は通常2Dゲームで0に設定
+        );
+
+        // ランダムな顧客プレハブを選択し、指定範囲内のランダムな位置にスポーン
         Customer newCustomer = Instantiate(
             customerPrefabs[Random.Range(0, customerPrefabs.Count)],
-            customerSpawnPoint.position,
-            Quaternion.identity,
-            customerSpawnPoint
+            randomPosition,
+            Quaternion.identity
         );
 
         List<Sprite> customerOrder = GenerateOrder();
@@ -48,7 +59,7 @@ public class OrderManager : MonoBehaviour
     private List<Sprite> GenerateOrder()
     {
         List<Sprite> order = new List<Sprite>();
-        for (int i = 0; i < 3; i++) // 3つの注文アイテムを設定（任意で変更可能）
+        for (int i = 0; i < 3; i++)
         {
             Sprite randomItem = possibleItems[Random.Range(0, possibleItems.Count)];
             order.Add(randomItem);
