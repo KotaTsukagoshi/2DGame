@@ -20,7 +20,7 @@ public class OrderManager : MonoBehaviour
     {
         if (currentCustomer != null)
         {
-            Destroy(currentCustomer.gameObject); // 現在の顧客を削除
+            Destroy(currentCustomer.gameObject);
         }
 
         Customer newCustomer = Instantiate(
@@ -33,8 +33,16 @@ public class OrderManager : MonoBehaviour
         List<Sprite> customerOrder = GenerateOrder();
         newCustomer.SetupCustomer(newCustomer.customerImage.sprite, customerOrder);
 
+        // TrayDropZoneへのOrderManager参照を設定
+        TrayDropZone trayDropZone = newCustomer.GetComponentInChildren<TrayDropZone>();
+        if (trayDropZone != null)
+        {
+            trayDropZone.SetOrderManager(this); // ここでOrderManagerを設定
+        }
+
         currentCustomer = newCustomer;
     }
+
 
     // ランダムに注文を生成
     private List<Sprite> GenerateOrder()

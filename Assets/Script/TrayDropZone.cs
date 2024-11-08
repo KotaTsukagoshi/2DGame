@@ -17,7 +17,6 @@ public class TrayDropZone : MonoBehaviour, IDropHandler
                 if (orderManager.CheckOrder(itemImage.sprite))
                 {
                     Debug.Log("納品完了！");
-                    Destroy(droppedItem); // 正しいアイテムなので削除
                 }
                 else
                 {
@@ -25,5 +24,10 @@ public class TrayDropZone : MonoBehaviour, IDropHandler
                 }
             }
         }
+    }
+
+    public void SetOrderManager(OrderManager manager)
+    {
+        orderManager = manager;
     }
 }
