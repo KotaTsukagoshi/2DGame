@@ -63,8 +63,8 @@ public class OrderManager : MonoBehaviour
     {
         List<Sprite> order = new List<Sprite>();
 
-        // 顧客に必要な注文アイテムを3つ選ぶ
-        for (int i = 0; i < 3; i++)
+        // 顧客に必要な注文アイテムを1つ選ぶ
+        for (int i = 0; i < 1; i++)
         {
             Sprite randomItem = possibleItems[Random.Range(0, possibleItems.Count)];
             order.Add(randomItem);
