@@ -10,6 +10,7 @@ public class Customer : MonoBehaviour
     public TrayDropZone trayDropZone; // ドロップトレイの参照
 
 
+
     // 顧客の注文を表示
     public void DisplayOrder()
     {
