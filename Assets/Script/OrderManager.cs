@@ -6,7 +6,6 @@ public class OrderManager : MonoBehaviour
 {
     public List<Sprite> possibleItems; // 全ての可能なアイテムリスト（注文可能なアイテム）
     public List<Customer> customerPrefabs; // 生成可能な顧客プレハブのリスト
-    public Transform customerSpawnPoint; // 顧客の初期生成位置
 
     // カスタマーのスポーン範囲を指定するためのフィールド
     public Transform spawnAreaTopLeft; // スポーン範囲の左上座標
