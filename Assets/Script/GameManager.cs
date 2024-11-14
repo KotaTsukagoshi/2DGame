@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
+using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,14 +14,16 @@ public class GameManager : MonoBehaviour
     public TMP_FontAsset newFont;  // 新しいフォントをインスペクターから設定
     public float newFontSize = 50f;  // 新しいフォントサイズを設定
 
+    public GameObject quitPanel;  // Quit パネルの参照
+
     public OrderManager orderManager; // OrderManagerへの参照
 
-    private int countdownTime = 3;
 
     void Start()
     {
         gameElements.SetActive(false);
         startPanel.SetActive(true);
+        quitPanel.SetActive(true);  // Quit パネルを最初は表示
 
         // フォントを変更
         if (newFont != null)
@@ -37,6 +40,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Start Button Pressed"); // ログ追加
         startButton.gameObject.SetActive(false);
+        quitPanel.SetActive(false);  // スタートボタンが押されたらQuitパネルを非表示にする
         StartCoroutine(CountdownCoroutine());
     }
 
@@ -63,4 +67,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#elif UNITY_STANDALONE
+    Application.Quit();
+#endif
+    }
 }
