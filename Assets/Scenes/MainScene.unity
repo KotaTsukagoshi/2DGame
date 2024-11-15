@@ -524,7 +524,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   progressBar: {fileID: 115603913}
-  maxTime: 10
+  maxTime: 3
 --- !u!1 &280581875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,7 +1033,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1685179707}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: RestartGame
+        m_MethodName: StartGameCountdown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

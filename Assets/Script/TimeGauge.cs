@@ -5,7 +5,7 @@ using System;
 public class TimeGauge : MonoBehaviour
 {
     public Image progressBar;  // 時間ゲージの進行部分
-    public float maxTime = 10f; // ゲージが満タンになるまでの時間
+    public float maxTime = 3f; // ゲージが満タンになるまでの時間
 
     private float currentTime = 0f;
 
@@ -19,6 +19,7 @@ public class TimeGauge : MonoBehaviour
         {
             progressBar.fillAmount = 0f;
         }
+        ResetGauge();  // ゲージをリセットして初期化
     }
 
     void Update()
@@ -41,6 +42,15 @@ public class TimeGauge : MonoBehaviour
         else if (progressBar == null)
         {
             Debug.LogError("ProgressBar is not assigned!");
+        }
+    }
+    // ゲージをリセットするメソッド
+    public void ResetGauge()
+    {
+        currentTime = 0f;
+        if (progressBar != null)
+        {
+            progressBar.fillAmount = 0f;
         }
     }
 }

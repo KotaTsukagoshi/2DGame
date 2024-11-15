@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Start Button Pressed"); // ログ追加
         startButton.gameObject.SetActive(false);
+        EndPanel.gameObject.SetActive(false);
         quitPanel.SetActive(false);  // スタートボタンが押されたらQuitパネルを非表示にする
         StartCoroutine(CountdownCoroutine());
     }
@@ -80,6 +81,11 @@ public class GameManager : MonoBehaviour
         if (orderManager != null)
         {
             orderManager.InitializeOrders();
+        }
+        // TimeGaugeのリセット
+        if (timeGauge != null)
+        {
+            timeGauge.ResetGauge();
         }
     }
 
@@ -111,11 +117,22 @@ public class GameManager : MonoBehaviour
     // Retryボタンの処理
     public void RestartGame()
     {
-        Debug.Log("Retry Button Pressed");
-        isGameFinished = false;
-        finishText.gameObject.SetActive(false);  // 終了メッセージを非表示
-        quitPanel.SetActive(false);  // Quitパネルを非表示
-        Time.timeScale = 1;  // ゲームの進行を再開
+        //Debug.Log("Retry Button Pressed");
+        //isGameFinished = false;
+        //finishText.gameObject.SetActive(false);  // 終了メッセージを非表示
+        //quitPanel.SetActive(false);  // Quitパネルを非表示
+        //Time.timeScale = 1;  // ゲームの進行を再開
+        // OrderManagerの初期化
+        if (orderManager != null)
+        {
+            orderManager.InitializeOrders();
+        }
+
+        // TimeGaugeのリセット
+        if (timeGauge != null)
+        {
+            timeGauge.ResetGauge();
+        }
         StartGameCountdown();  // ゲームを再スタート
     }
 
