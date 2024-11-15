@@ -4,47 +4,85 @@ using System;
 
 public class TimeGauge : MonoBehaviour
 {
-    public Image progressBar;  // 時間ゲージの進行部分
-    public float maxTime = 3f; // ゲージが満タンになるまでの時間
+    [Header("Gauge Settings")]
+    public Image progressBar;  // 時間ゲージの進行部分（UIのImageコンポーネント）
+    public float maxTime = 3f;  // ゲージが満タンになるまでの時間（秒）
 
-    private float currentTime = 0f;
+    private float currentTime = 0f;  // 経過時間を保持
 
-    // 時間切れを通知するためのイベント
+    // 時間切れを通知するためのイベント（リスナーを追加できる）
     public event Action OnTimeUp;
 
     void Start()
     {
-        // ゲージが空からスタートするように設定
-        if (progressBar != null)
-        {
-            progressBar.fillAmount = 0f;
-        }
-        ResetGauge();  // ゲージをリセットして初期化
+        InitializeGauge();  // ゲージの初期化
     }
 
     void Update()
     {
-        // ゲージが満タンでなければ進行
-        if (progressBar != null && currentTime < maxTime)
-        {
-            currentTime += Time.deltaTime;  // 経過時間を追加
-            progressBar.fillAmount = currentTime / maxTime;  // fillAmountを更新
+        UpdateGauge();  // ゲージの更新
+    }
 
-            // デバッグ用メッセージ
-            Debug.Log("Current Time: " + currentTime);
-            Debug.Log("Fill Amount: " + progressBar.fillAmount);
-        }
-        else if (currentTime >= maxTime)
+    /// <summary>
+    /// ゲージを初期化するメソッド。
+    /// ゲージが空からスタートするように設定。
+    /// </summary>
+    private void InitializeGauge()
+    {
+        if (progressBar != null)
         {
-            // ゲージが満タンになったら時間切れイベントを呼び出す
-            OnTimeUp?.Invoke();
+            progressBar.fillAmount = 0f;
         }
-        else if (progressBar == null)
+        else
         {
             Debug.LogError("ProgressBar is not assigned!");
         }
+
+        ResetGauge();
     }
-    // ゲージをリセットするメソッド
+
+    /// <summary>
+    /// ゲージの進行を管理するメソッド。
+    /// 経過時間に応じてゲージを増加させ、時間切れイベントを発生させる。
+    /// </summary>
+    private void UpdateGauge()
+    {
+        // ゲージが有効であり、まだ満タンでない場合のみ進行
+        if (progressBar != null && currentTime < maxTime)
+        {
+            currentTime += Time.deltaTime;  // 経過時間を追加
+            UpdateProgressBar();
+
+            // デバッグメッセージ
+            Debug.Log($"Current Time: {currentTime}");
+            Debug.Log($"Fill Amount: {progressBar.fillAmount}");
+        }
+        else if (currentTime >= maxTime)
+        {
+            HandleTimeUp();  // ゲージが満タンになった時の処理
+        }
+    }
+
+    /// <summary>
+    /// ゲージのfillAmountを更新するメソッド。
+    /// </summary>
+    private void UpdateProgressBar()
+    {
+        progressBar.fillAmount = currentTime / maxTime;
+    }
+
+    /// <summary>
+    /// ゲージが満タンになった時の処理。
+    /// 時間切れイベントを呼び出す。
+    /// </summary>
+    private void HandleTimeUp()
+    {
+        OnTimeUp?.Invoke();  // 時間切れイベントを発生
+    }
+
+    /// <summary>
+    /// ゲージをリセットし、再スタートさせるメソッド。
+    /// </summary>
     public void ResetGauge()
     {
         currentTime = 0f;
