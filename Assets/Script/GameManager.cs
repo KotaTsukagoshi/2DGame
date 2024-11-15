@@ -34,9 +34,7 @@ public class GameManager : MonoBehaviour
         InitializeGame();
     }
 
-    /// <summary>
     /// ゲーム開始時のUIとボタン設定の初期化を行うメソッド。
-    /// </summary>
     private void InitializeUI()
     {
         // ゲーム要素を非表示、開始パネルを表示
@@ -53,9 +51,7 @@ public class GameManager : MonoBehaviour
         retryButton.onClick.AddListener(RestartGame);
     }
 
-    /// <summary>
     /// フォントの設定を行うメソッド。
-    /// </summary>
     private void SetupFontSettings()
     {
         if (newFont != null)
@@ -67,9 +63,7 @@ public class GameManager : MonoBehaviour
         finishText.fontSize = newFontSize;
     }
 
-    /// <summary>
     /// ゲームロジックの初期設定を行うメソッド。
-    /// </summary>
     private void InitializeGame()
     {
         // タイムゲージの時間切れイベントに登録
@@ -80,9 +74,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;  // ゲーム開始時は通常速度
     }
 
-    /// <summary>
     /// ゲーム開始時のカウントダウンを開始するメソッド。
-    /// </summary>
     public void StartGameCountdown()
     {
         Debug.Log("Start Button Pressed");
@@ -93,9 +85,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(CountdownCoroutine());
     }
 
-    /// <summary>
     /// カウントダウンを実行するコルーチン。
-    /// </summary>
     private IEnumerator CountdownCoroutine()
     {
         countdownText.text = "Ready?";
@@ -108,9 +98,7 @@ public class GameManager : MonoBehaviour
         StartGame();
     }
 
-    /// <summary>
     /// ゲームの開始処理を行うメソッド。
-    /// </summary>
     private void StartGame()
     {
         countdownText.gameObject.SetActive(false);
@@ -128,9 +116,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /// <summary>
     /// ゲーム終了時に呼び出されるメソッド。ゲームの進行を停止する。
-    /// </summary>
     public void EndGame()
     {
         if (!isGameFinished)
@@ -150,9 +136,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /// <summary>
     /// ゲーム終了後、1秒待機してから終了ボタンを表示するコルーチン。
-    /// </summary>
     private IEnumerator ShowEndButtonsAfterDelay()
     {
         yield return new WaitForSecondsRealtime(1f); // 実時間で1秒待機
@@ -160,9 +144,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    /// <summary>
     /// ゲームをリスタートするメソッド。Retryボタン用。
-    /// </summary>
     public void RestartGame()
     {
         Debug.Log("Retry Button Pressed");
@@ -170,9 +152,7 @@ public class GameManager : MonoBehaviour
         StartGameCountdown();
     }
 
-    /// <summary>
     /// ゲームのリセット処理を行うメソッド。
-    /// </summary>
     private void ResetGame()
     {
         quitPanel.SetActive(false);
@@ -195,9 +175,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /// <summary>
     /// ゲームを終了するメソッド。Quitボタン用。
-    /// </summary>
     private void QuitGame()
     {
         Debug.Log("Quit Button Pressed");
