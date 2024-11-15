@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class TimeGauge : MonoBehaviour
 {
@@ -7,6 +8,9 @@ public class TimeGauge : MonoBehaviour
     public float maxTime = 10f; // ゲージが満タンになるまでの時間
 
     private float currentTime = 0f;
+
+    // 時間切れを通知するためのイベント
+    public event Action OnTimeUp;
 
     void Start()
     {
@@ -29,10 +33,14 @@ public class TimeGauge : MonoBehaviour
             Debug.Log("Current Time: " + currentTime);
             Debug.Log("Fill Amount: " + progressBar.fillAmount);
         }
+        else if (currentTime >= maxTime)
+        {
+            // ゲージが満タンになったら時間切れイベントを呼び出す
+            OnTimeUp?.Invoke();
+        }
         else if (progressBar == null)
         {
             Debug.LogError("ProgressBar is not assigned!");
         }
     }
-
 }
