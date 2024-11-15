@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour
         startButton.gameObject.SetActive(false);
         endPanel.gameObject.SetActive(false);
         quitPanel.SetActive(false);  // スタート時にQuitパネルを非表示
+
         StartCoroutine(CountdownCoroutine());
     }
 
@@ -137,13 +138,15 @@ public class GameManager : MonoBehaviour
             isGameFinished = true;
             Time.timeScale = 0;  // ゲームの進行を停止
             gameElements.SetActive(false);
-            endPanel.SetActive(true);
 
             finishText.text = "Finish!";
             finishText.gameObject.SetActive(true);
 
             // 1秒後に終了ボタンを表示
             StartCoroutine(ShowEndButtonsAfterDelay());
+            endPanel.SetActive(true);
+
+
         }
     }
 
@@ -153,7 +156,8 @@ public class GameManager : MonoBehaviour
     private IEnumerator ShowEndButtonsAfterDelay()
     {
         yield return new WaitForSecondsRealtime(1f); // 実時間で1秒待機
-        quitPanel.SetActive(true);
+        finishText.gameObject.SetActive(false);
+
     }
 
     /// <summary>
@@ -171,10 +175,14 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void ResetGame()
     {
-        isGameFinished = false;
-        finishText.gameObject.SetActive(false);
         quitPanel.SetActive(false);
+
         Time.timeScale = 1;  // ゲームの進行を再開
+        gameElements.SetActive(false);
+        startPanel.SetActive(true);
+
+        // カウントダウンテキストをリセット
+        countdownText.gameObject.SetActive(true);  // カウントダウンテキストを表示
 
         if (orderManager != null)
         {
