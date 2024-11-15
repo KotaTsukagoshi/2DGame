@@ -2351,7 +2351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPanel: {fileID: 1962283661}
-  EndPanel: {fileID: 1760277871}
+  endPanel: {fileID: 1760277871}
   startButton: {fileID: 280581877}
   countdownText: {fileID: 370731323}
   gameElements: {fileID: 628521995}

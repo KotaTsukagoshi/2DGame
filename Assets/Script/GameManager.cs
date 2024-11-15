@@ -5,138 +5,191 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject startPanel;
-    public GameObject EndPanel;
-    public Button startButton;
-    public TextMeshProUGUI countdownText;
-    public GameObject gameElements;
+    [Header("UI Elements")]
+    public GameObject startPanel;          // ゲーム開始時のパネル
+    public GameObject endPanel;            // ゲーム終了時のパネル
+    public Button startButton;             // ゲーム開始ボタン
+    public TextMeshProUGUI countdownText;  // カウントダウンのテキスト
+    public GameObject gameElements;        // ゲーム中の要素（非表示/表示用）
 
-    public TMP_FontAsset newFont;  // 新しいフォントをインスペクターから設定
-    public float newFontSize = 50f;  // 新しいフォントサイズを設定
+    [Header("Font Settings")]
+    public TMP_FontAsset newFont;          // カウントダウンテキスト用のフォント
+    public float newFontSize = 50f;        // カウントダウンテキストのフォントサイズ
 
-    public GameObject quitPanel;  // Quit パネルの参照
-    public Button quitButton;     // Quit ボタンの参照
-    public Button retryButton;    // Retry ボタンの参照
-    public TextMeshProUGUI finishText; // 終了時に表示するテキスト
+    [Header("End Game UI")]
+    public GameObject quitPanel;           // 終了時のQuitパネル
+    public Button quitButton;              // ゲーム終了ボタン
+    public Button retryButton;             // リトライボタン
+    public TextMeshProUGUI finishText;     // 終了時のメッセージ表示用
 
-    public OrderManager orderManager; // OrderManagerへの参照
-    public TimeGauge timeGauge;  // TimeGaugeの参照
+    [Header("Game Managers")]
+    public OrderManager orderManager;      // OrderManagerへの参照
+    public TimeGauge timeGauge;            // TimeGaugeの参照
 
-    private bool isGameFinished = false;
+    private bool isGameFinished = false;   // ゲームが終了したかどうかのフラグ
 
     void Start()
     {
+        InitializeUI();
+        InitializeGame();
+    }
+
+    /// <summary>
+    /// ゲーム開始時のUIとボタン設定の初期化を行うメソッド。
+    /// </summary>
+    private void InitializeUI()
+    {
+        // ゲーム要素を非表示、開始パネルを表示
         gameElements.SetActive(false);
         startPanel.SetActive(true);
-        finishText.gameObject.SetActive(false);  // 最初は非表示
+        finishText.gameObject.SetActive(false);
 
-        // フォントを変更
+        // カウントダウンテキストのフォントとサイズを設定
+        SetupFontSettings();
+
+        // ボタンのクリックイベントを設定
+        startButton.onClick.AddListener(StartGameCountdown);
+        quitButton.onClick.AddListener(QuitGame);
+        retryButton.onClick.AddListener(RestartGame);
+    }
+
+    /// <summary>
+    /// フォントの設定を行うメソッド。
+    /// </summary>
+    private void SetupFontSettings()
+    {
         if (newFont != null)
         {
             countdownText.font = newFont;
             finishText.font = newFont;
         }
-        // フォントサイズを変更
         countdownText.fontSize = newFontSize;
         finishText.fontSize = newFontSize;
+    }
 
-        startButton.onClick.AddListener(StartGameCountdown);
-        quitButton.onClick.AddListener(QuitGame);
-        retryButton.onClick.AddListener(RestartGame);  // Retryボタンの処理を追加
-
-        // TimeGaugeの時間切れイベントに登録
+    /// <summary>
+    /// ゲームロジックの初期設定を行うメソッド。
+    /// </summary>
+    private void InitializeGame()
+    {
+        // タイムゲージの時間切れイベントに登録
         if (timeGauge != null)
         {
             timeGauge.OnTimeUp += EndGame;
         }
-
         Time.timeScale = 1;  // ゲーム開始時は通常速度
     }
 
+    /// <summary>
+    /// ゲーム開始時のカウントダウンを開始するメソッド。
+    /// </summary>
     public void StartGameCountdown()
     {
-        Debug.Log("Start Button Pressed"); // ログ追加
+        Debug.Log("Start Button Pressed");
         startButton.gameObject.SetActive(false);
-        EndPanel.gameObject.SetActive(false);
-        quitPanel.SetActive(false);  // スタートボタンが押されたらQuitパネルを非表示にする
+        endPanel.gameObject.SetActive(false);
+        quitPanel.SetActive(false);  // スタート時にQuitパネルを非表示
         StartCoroutine(CountdownCoroutine());
     }
 
+    /// <summary>
+    /// カウントダウンを実行するコルーチン。
+    /// </summary>
     private IEnumerator CountdownCoroutine()
     {
-        // 最初に「Ready?」を表示
         countdownText.text = "Ready?";
-        yield return new WaitForSeconds(1f); // 1秒待機
+        yield return new WaitForSeconds(1f);
 
-        // 「GO!」を表示
         countdownText.text = "GO!";
-        yield return new WaitForSeconds(1f); // 1秒待機してから次の処理
+        yield return new WaitForSeconds(1f);
 
         // カウントダウン終了後の処理
-        countdownText.gameObject.SetActive(false);  // カウントダウンのテキストを非表示
-        gameElements.SetActive(true);  // ゲーム要素を表示
-        startPanel.SetActive(false);  // スタートパネルを非表示
+        StartGame();
+    }
 
-        // OrderManagerの初期化メソッドを呼び出してゲームをスタート
+    /// <summary>
+    /// ゲームの開始処理を行うメソッド。
+    /// </summary>
+    private void StartGame()
+    {
+        countdownText.gameObject.SetActive(false);
+        gameElements.SetActive(true);
+        startPanel.SetActive(false);
+
         if (orderManager != null)
         {
             orderManager.InitializeOrders();
         }
-        // TimeGaugeのリセット
+
         if (timeGauge != null)
         {
             timeGauge.ResetGauge();
         }
     }
 
-    // ゲーム終了時に呼び出されるメソッド
+    /// <summary>
+    /// ゲーム終了時に呼び出されるメソッド。ゲームの進行を停止する。
+    /// </summary>
     public void EndGame()
     {
         if (!isGameFinished)
         {
             isGameFinished = true;
             Time.timeScale = 0;  // ゲームの進行を停止
-            gameElements.SetActive(false);  // ゲーム要素を非表示
+            gameElements.SetActive(false);
+            endPanel.SetActive(true);
 
-            EndPanel.SetActive(true);
-
-            finishText.text = "Finish!";    // 終了メッセージを表示
+            finishText.text = "Finish!";
             finishText.gameObject.SetActive(true);
 
-            // 1秒待機後にボタンを表示
+            // 1秒後に終了ボタンを表示
             StartCoroutine(ShowEndButtonsAfterDelay());
         }
     }
 
+    /// <summary>
+    /// ゲーム終了後、1秒待機してから終了ボタンを表示するコルーチン。
+    /// </summary>
     private IEnumerator ShowEndButtonsAfterDelay()
     {
-        yield return new WaitForSecondsRealtime(1f); // ゲーム停止中でも実時間で1秒待機
-        quitPanel.SetActive(true); // QuitとRetryボタンを表示
+        yield return new WaitForSecondsRealtime(1f); // 実時間で1秒待機
+        quitPanel.SetActive(true);
     }
 
-    // Retryボタンの処理
+    /// <summary>
+    /// ゲームをリスタートするメソッド。Retryボタン用。
+    /// </summary>
     public void RestartGame()
     {
-        //Debug.Log("Retry Button Pressed");
-        //isGameFinished = false;
-        //finishText.gameObject.SetActive(false);  // 終了メッセージを非表示
-        //quitPanel.SetActive(false);  // Quitパネルを非表示
-        //Time.timeScale = 1;  // ゲームの進行を再開
-        // OrderManagerの初期化
+        Debug.Log("Retry Button Pressed");
+        ResetGame();
+        StartGameCountdown();
+    }
+
+    /// <summary>
+    /// ゲームのリセット処理を行うメソッド。
+    /// </summary>
+    private void ResetGame()
+    {
+        isGameFinished = false;
+        finishText.gameObject.SetActive(false);
+        quitPanel.SetActive(false);
+        Time.timeScale = 1;  // ゲームの進行を再開
+
         if (orderManager != null)
         {
             orderManager.InitializeOrders();
         }
 
-        // TimeGaugeのリセット
         if (timeGauge != null)
         {
             timeGauge.ResetGauge();
         }
-        StartGameCountdown();  // ゲームを再スタート
     }
 
-    // Quitボタンの処理
+    /// <summary>
+    /// ゲームを終了するメソッド。Quitボタン用。
+    /// </summary>
     private void QuitGame()
     {
         Debug.Log("Quit Button Pressed");
