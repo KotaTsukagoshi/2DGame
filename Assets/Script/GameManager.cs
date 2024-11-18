@@ -150,11 +150,13 @@ public class GameManager : MonoBehaviour
         Debug.Log("Retry Button Pressed");
         ResetGame();
         StartGameCountdown();
+
     }
 
     /// ゲームのリセット処理を行うメソッド。
     private void ResetGame()
     {
+        isGameFinished = false;  // ゲーム終了フラグをリセット
         quitPanel.SetActive(false);
 
         Time.timeScale = 1;  // ゲームの進行を再開
