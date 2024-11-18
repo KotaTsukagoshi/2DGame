@@ -1654,7 +1654,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Orver Ordeing
+  m_text: Over Ordering
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 30d587889aa91684db2e6b463d466600, type: 2}
   m_sharedMaterial: {fileID: -2312385310434922000, guid: 30d587889aa91684db2e6b463d466600, type: 2}
