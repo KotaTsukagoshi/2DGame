@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public GameObject startPanel;          // ゲーム開始時のパネル
     public GameObject endPanel;            // ゲーム終了時のパネル
     public Button startButton;             // ゲーム開始ボタン
+    public GameObject Title;
     public TextMeshProUGUI countdownText;  // カウントダウンのテキスト
     public GameObject gameElements;        // ゲーム中の要素（非表示/表示用）
     private DraggableItem[] draggableItems;  // DraggableItemへの参照を保持する配列
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Start Button Pressed");
         startButton.gameObject.SetActive(false);
+        Title.gameObject.SetActive(false);
         endPanel.gameObject.SetActive(false);
         quitPanel.SetActive(false);  // スタート時にQuitパネルを非表示
 
