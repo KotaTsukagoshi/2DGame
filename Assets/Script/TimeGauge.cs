@@ -54,8 +54,8 @@ public class TimeGauge : MonoBehaviour
             UpdateProgressBar();
 
             // デバッグメッセージ
-            Debug.Log($"Current Time: {currentTime}");
-            Debug.Log($"Fill Amount: {progressBar.fillAmount}");
+            //Debug.Log($"Current Time: {currentTime}");
+            //Debug.Log($"Fill Amount: {progressBar.fillAmount}");
         }
         else if (currentTime >= maxTime)
         {

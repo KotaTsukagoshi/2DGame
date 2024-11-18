@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     public Button startButton;             // ゲーム開始ボタン
     public TextMeshProUGUI countdownText;  // カウントダウンのテキスト
     public GameObject gameElements;        // ゲーム中の要素（非表示/表示用）
+    private DraggableItem[] draggableItems;  // DraggableItemへの参照を保持する配列
+
 
     [Header("Font Settings")]
     public TMP_FontAsset newFont;          // カウントダウンテキスト用のフォント
@@ -32,6 +34,9 @@ public class GameManager : MonoBehaviour
     {
         InitializeUI();
         InitializeGame();
+
+        // シーン内の全ての DraggableItem を取得
+        draggableItems = FindObjectsOfType<DraggableItem>();
     }
 
     /// ゲーム開始時のUIとボタン設定の初期化を行うメソッド。
@@ -125,14 +130,22 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;  // ゲームの進行を停止
             gameElements.SetActive(false);
 
+            // 全ての DraggableItem の初期位置を再保存
+            SaveAllDraggableItemsPosition();
+
             finishText.text = "Finish!";
             finishText.gameObject.SetActive(true);
 
             // 1秒後に終了ボタンを表示
             StartCoroutine(ShowEndButtonsAfterDelay());
             endPanel.SetActive(true);
-
-
+        }
+    }
+    public void SaveAllDraggableItemsPosition()
+    {
+        foreach (DraggableItem item in draggableItems)
+        {
+            item.RestoreStartPosition();
         }
     }
 
@@ -174,6 +187,18 @@ public class GameManager : MonoBehaviour
         if (timeGauge != null)
         {
             timeGauge.ResetGauge();
+        }
+
+        // 全ての DraggableItem の初期位置を保存する
+        SaveAllDraggableItemsPosition();
+    }
+    // 全ての DraggableItem の初期位置をリセットするメソッド
+    private void ResetAllDraggableItems()
+    {
+        foreach (DraggableItem item in draggableItems)
+        {
+            item.RestoreStartPosition();
+            Debug.Log("[SaveAllDraggableItemsPosition] Saved startPosition for item.");
         }
     }
 
