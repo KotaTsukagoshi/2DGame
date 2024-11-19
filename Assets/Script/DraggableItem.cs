@@ -14,14 +14,22 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     void Awake()
     {
-        rectTransform = GetComponent<RectTransform>();
-        canvasGroup = GetComponent<CanvasGroup>();
-
-        // 初期位置を保存（Awakeでの保存をやめる）
-        SetInitialPosition();
+        InitializeComponents();
+        SetInitialPosition(); // 初期位置を保存
     }
 
-    // 初期位置を保存するメソッド
+    /// <summary>
+    /// 必要なコンポーネントを初期化する。
+    /// </summary>
+    private void InitializeComponents()
+    {
+        rectTransform = GetComponent<RectTransform>();
+        canvasGroup = GetComponent<CanvasGroup>();
+    }
+
+    /// <summary>
+    /// 初期位置を保存するメソッド。
+    /// </summary>
     private void SetInitialPosition()
     {
         initialStartPosition = rectTransform.position;
@@ -29,35 +37,52 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         Debug.Log($"[SetInitialPosition] initialStartPosition set to: {initialStartPosition}");
     }
 
+    /// <summary>
+    /// ドラッグ開始時の処理。
+    /// </summary>
+    /// <param name="eventData">ドラッグイベントデータ。</param>
     public void OnBeginDrag(PointerEventData eventData)
     {
+        // ドラッグ中にRaycastを無効化
         canvasGroup.blocksRaycasts = false;
     }
 
+    /// <summary>
+    /// ドラッグ中の処理。
+    /// </summary>
+    /// <param name="eventData">ドラッグイベントデータ。</param>
     public void OnDrag(PointerEventData eventData)
     {
+        // アイテムの位置を更新
         rectTransform.anchoredPosition += eventData.delta;
     }
 
+    /// <summary>
+    /// ドラッグ終了時の処理。
+    /// </summary>
+    /// <param name="eventData">ドラッグイベントデータ。</param>
     public void OnEndDrag(PointerEventData eventData)
     {
+        // ドラッグ終了時にRaycastを有効化
         canvasGroup.blocksRaycasts = true;
-        ResetPosition();
+        ResetPosition(); // アイテムを元の位置に戻す
     }
 
-    // アイテムを初期位置にリセットするメソッド
+    /// <summary>
+    /// アイテムを初期位置にリセットするメソッド。
+    /// </summary>
     public void ResetPosition()
     {
-        // ゲームのリセット時に初期位置に戻す
         rectTransform.position = initialStartPosition;
         Debug.Log($"[ResetPosition] Reset to initialStartPosition: {initialStartPosition}");
     }
 
-    // ゲームのリセット時に呼び出されるメソッド
+    /// <summary>
+    /// ゲームのリセット時に呼び出されるメソッド。
+    /// </summary>
     public void ResetItem()
     {
-        // 初期位置を再設定
-        SetInitialPosition();
-        ResetPosition();
+        SetInitialPosition(); // 初期位置を再設定
+        ResetPosition();      // アイテムを元の位置にリセット
     }
 }
