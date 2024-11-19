@@ -20,6 +20,15 @@ public class OrderManager : MonoBehaviour
 
     private Customer currentCustomer; // 現在表示されている顧客オブジェクト
 
+    public TimeGauge timeGauge;  // TimeGaugeへの参照
+
+
+    void Start()
+    {
+        // TimeGaugeを取得して設定
+        timeGauge = FindObjectOfType<TimeGauge>();  // シーン内のTimeGaugeコンポーネントを探して設定
+    }
+
     /// <summary>
     /// ゲーム開始時に注文を初期化し、最初の顧客を生成する。
     /// </summary>
@@ -141,6 +150,8 @@ public class OrderManager : MonoBehaviour
             if (currentCustomer.orderItems.Count == 0)
             {
                 SpawnCustomer();
+                // 正しい注文が完了した場合、タイムゲージを1秒回復
+                timeGauge.RecoverTime(-1.5f);
             }
             return true;
         }

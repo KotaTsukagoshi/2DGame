@@ -545,7 +545,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -255.9, y: 207.2}
+  m_AnchoredPosition: {x: -255.9, y: 207.20001}
   m_SizeDelta: {x: 526.32, y: 15}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &200499234
@@ -2100,6 +2100,7 @@ MonoBehaviour:
   - {fileID: 6469266474661508182, guid: 6c3b47b3cc9d117458ea8e8adf6926ad, type: 3}
   spawnAreaTopLeft: {fileID: 1831456837}
   spawnAreaBottomRight: {fileID: 948019698}
+  timeGauge: {fileID: 0}
 --- !u!1 &1017805698
 GameObject:
   m_ObjectHideFlags: 0
@@ -2863,7 +2864,7 @@ MonoBehaviour:
   startPanel: {fileID: 1962283661}
   endPanel: {fileID: 1760277871}
   startButton: {fileID: 280581877}
-  Title: {fileID: 1783051858}
+  title: {fileID: 1783051858}
   countdownText: {fileID: 370731323}
   gameElements: {fileID: 628521995}
   newFont: {fileID: 11400000, guid: 30d587889aa91684db2e6b463d466600, type: 2}

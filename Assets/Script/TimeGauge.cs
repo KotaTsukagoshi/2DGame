@@ -91,4 +91,11 @@ public class TimeGauge : MonoBehaviour
             progressBar.fillAmount = 0f;
         }
     }
+
+    public void RecoverTime(float amount)
+    {
+        currentTime = Mathf.Min(currentTime + amount, maxTime);  // ゲージが最大を超えないようにする
+        UpdateProgressBar();  // ゲージを更新
+    }
+
 }
