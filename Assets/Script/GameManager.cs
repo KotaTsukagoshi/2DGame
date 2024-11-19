@@ -132,8 +132,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;  // ゲームの進行を停止
             gameElements.SetActive(false);
 
-            // 全ての DraggableItem の初期位置を再保存
-            SaveAllDraggableItemsPosition();
+
 
             finishText.text = "Finish!";
             finishText.gameObject.SetActive(true);
@@ -143,13 +142,7 @@ public class GameManager : MonoBehaviour
             endPanel.SetActive(true);
         }
     }
-    public void SaveAllDraggableItemsPosition()
-    {
-        foreach (DraggableItem item in draggableItems)
-        {
-            item.RestoreStartPosition();
-        }
-    }
+
 
     /// ゲーム終了後、1秒待機してから終了ボタンを表示するコルーチン。
     private IEnumerator ShowEndButtonsAfterDelay()
@@ -191,19 +184,13 @@ public class GameManager : MonoBehaviour
             timeGauge.ResetGauge();
         }
 
-        // 全ての DraggableItem の初期位置を保存する
-        SaveAllDraggableItemsPosition();
-    }
-    // 全ての DraggableItem の初期位置をリセットするメソッド
-    private void ResetAllDraggableItems()
-    {
-        foreach (DraggableItem item in draggableItems)
+        // DraggableItemのリセットを呼び出す
+        foreach (var draggableItem in FindObjectsOfType<DraggableItem>())
         {
-            item.RestoreStartPosition();
-            Debug.Log("[SaveAllDraggableItemsPosition] Saved startPosition for item.");
+            // 初期位置を再設定し、アイテムをリセット
+            draggableItem.ResetItem();
         }
     }
-
     /// ゲームを終了するメソッド。Quitボタン用。
     private void QuitGame()
     {

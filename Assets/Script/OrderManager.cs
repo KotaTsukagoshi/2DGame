@@ -4,24 +4,24 @@ using System.Collections.Generic;
 
 public class OrderManager : MonoBehaviour
 {
-    [Header("Settings")]
-    [Tooltip("All possible items that can be ordered.")]
+    [Header("設定")]
+    [Tooltip("注文可能なすべてのアイテムリスト")]
     public List<Sprite> possibleItems; // 全ての注文可能なアイテムのリスト
 
-    [Tooltip("List of customer prefabs to spawn.")]
+    [Tooltip("生成する顧客プレハブのリスト")]
     public List<Customer> customerPrefabs; // 生成可能な顧客プレハブのリスト
 
-    [Header("Spawn Area")]
-    [Tooltip("Top-left corner of the customer spawn area.")]
+    [Header("スポーンエリア")]
+    [Tooltip("顧客スポーンエリアの左上角")]
     public Transform spawnAreaTopLeft; // スポーン範囲の左上座標
 
-    [Tooltip("Bottom-right corner of the customer spawn area.")]
+    [Tooltip("顧客スポーンエリアの右下角")]
     public Transform spawnAreaBottomRight; // スポーン範囲の右下座標
 
     private Customer currentCustomer; // 現在表示されている顧客オブジェクト
 
     /// <summary>
-    /// Called at the start of the game to initialize orders and spawn the first customer.
+    /// ゲーム開始時に注文を初期化し、最初の顧客を生成する。
     /// </summary>
     public void InitializeOrders()
     {
@@ -29,62 +29,79 @@ public class OrderManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns a new customer at a random position within the defined spawn area.
+    /// 指定されたスポーンエリア内のランダムな位置に新しい顧客を生成する。
     /// </summary>
-    public void SpawnCustomer()
+    private void SpawnCustomer()
     {
-        // 既存の顧客がいる場合は削除する
-        if (currentCustomer != null)
-        {
-            Destroy(currentCustomer.gameObject);
-        }
+        RemoveExistingCustomer();
+        Vector3 spawnPosition = GetRandomSpawnPosition();
+        Customer newCustomer = CreateNewCustomer(spawnPosition);
 
-        // ランダムな位置を計算して新しい顧客をスポーン
-        Vector3 randomPosition = GetRandomSpawnPosition();
-        Customer newCustomer = InstantiateRandomCustomer(randomPosition);
+        SetupCustomerOrder(newCustomer);
+        AssignOrderManagerToTray(newCustomer);
 
-        // 顧客ごとにランダムな注文を生成し、セットアップ
-        List<Sprite> customerOrder = GenerateOrder();
-        newCustomer.SetupCustomer(newCustomer.customerImage.sprite, customerOrder);
-
-        // TrayDropZoneコンポーネントにOrderManagerの参照を設定
-        SetupTrayDropZone(newCustomer);
-
-        // 現在の顧客を更新
         currentCustomer = newCustomer;
     }
 
     /// <summary>
-    /// Generates a random position within the spawn area.
+    /// 現在表示されている顧客がいれば削除する。
     /// </summary>
-    /// <returns>A random Vector3 position within the spawn area.</returns>
+    private void RemoveExistingCustomer()
+    {
+        if (currentCustomer != null)
+        {
+            Destroy(currentCustomer.gameObject);
+        }
+    }
+
+    /// <summary>
+    /// スポーンエリア内のランダムな位置を生成する。
+    /// </summary>
+    /// <returns>スポーンエリア内のランダムなVector3座標。</returns>
     private Vector3 GetRandomSpawnPosition()
     {
-        return new Vector3(
-            Random.Range(spawnAreaTopLeft.position.x, spawnAreaBottomRight.position.x),
-            Random.Range(spawnAreaBottomRight.position.y, spawnAreaTopLeft.position.y),
-            0
-        );
+        float x = Random.Range(spawnAreaTopLeft.position.x, spawnAreaBottomRight.position.x);
+        float y = Random.Range(spawnAreaBottomRight.position.y, spawnAreaTopLeft.position.y);
+
+        return new Vector3(x, y, 0);
     }
 
     /// <summary>
-    /// Instantiates a random customer prefab at the specified position.
+    /// 指定された位置に新しい顧客を生成する。
     /// </summary>
-    /// <param name="position">The position to spawn the customer.</param>
-    /// <returns>The instantiated Customer object.</returns>
-    private Customer InstantiateRandomCustomer(Vector3 position)
+    /// <param name="position">顧客をスポーンする位置。</param>
+    /// <returns>生成されたCustomerオブジェクト。</returns>
+    private Customer CreateNewCustomer(Vector3 position)
     {
-        // ランダムな顧客プレハブを選択し、指定されたランダム位置にスポーン
-        Customer randomCustomerPrefab = customerPrefabs[Random.Range(0, customerPrefabs.Count)];
-        Customer newCustomer = Instantiate(randomCustomerPrefab, position, Quaternion.identity);
-        return newCustomer;
+        Customer customerPrefab = GetRandomCustomerPrefab();
+        return Instantiate(customerPrefab, position, Quaternion.identity);
     }
 
     /// <summary>
-    /// Sets up the TrayDropZone with a reference to this OrderManager.
+    /// 利用可能なリストからランダムな顧客プレハブを選択する。
     /// </summary>
-    /// <param name="customer">The customer object to setup.</param>
-    private void SetupTrayDropZone(Customer customer)
+    /// <returns>ランダムなCustomerプレハブ。</returns>
+    private Customer GetRandomCustomerPrefab()
+    {
+        int randomIndex = Random.Range(0, customerPrefabs.Count);
+        return customerPrefabs[randomIndex];
+    }
+
+    /// <summary>
+    /// 顧客の注文をランダムに生成し、表示を初期化する。
+    /// </summary>
+    /// <param name="customer">設定する顧客。</param>
+    private void SetupCustomerOrder(Customer customer)
+    {
+        List<Sprite> order = GenerateRandomOrder();
+        customer.SetupCustomer(customer.customerImage.sprite, order);
+    }
+
+    /// <summary>
+    /// このOrderManagerインスタンスを顧客のTrayDropZoneに設定する。
+    /// </summary>
+    /// <param name="customer">設定する顧客オブジェクト。</param>
+    private void AssignOrderManagerToTray(Customer customer)
     {
         TrayDropZone trayDropZone = customer.GetComponentInChildren<TrayDropZone>();
         if (trayDropZone != null)
@@ -94,14 +111,13 @@ public class OrderManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Generates a random order for the customer.
+    /// 顧客のためにランダムな注文を生成する。
     /// </summary>
-    /// <returns>A list of Sprite representing the customer's order.</returns>
-    private List<Sprite> GenerateOrder()
+    /// <returns>顧客の注文を表すSpriteのリスト。</returns>
+    private List<Sprite> GenerateRandomOrder()
     {
         List<Sprite> order = new List<Sprite>();
 
-        // 顧客に必要な注文アイテムを1つ選ぶ（必要に応じて注文数を増やせる）
         Sprite randomItem = possibleItems[Random.Range(0, possibleItems.Count)];
         order.Add(randomItem);
 
@@ -109,11 +125,11 @@ public class OrderManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Checks if the given item is part of the current customer's order.
-    /// If the order is complete, spawns a new customer.
+    /// 指定されたアイテムが現在の顧客の注文の一部かどうかをチェックする。
+    /// 注文が完了した場合、新しい顧客を生成する。
     /// </summary>
-    /// <param name="itemSprite">The Sprite of the item being checked.</param>
-    /// <returns>True if the item is part of the order, false otherwise.</returns>
+    /// <param name="itemSprite">チェックするアイテムのSprite。</param>
+    /// <returns>アイテムが注文の一部であればtrue、それ以外はfalse。</returns>
     public bool CheckOrder(Sprite itemSprite)
     {
         if (currentCustomer != null && currentCustomer.orderItems.Contains(itemSprite))
