@@ -151,7 +151,7 @@ public class OrderManager : MonoBehaviour
             {
                 SpawnCustomer();
                 // 正しい注文が完了した場合、タイムゲージを1秒回復
-                timeGauge.RecoverTime(-1.5f);
+                timeGauge.RecoverTime(-1f);
             }
             return true;
         }
