@@ -9,11 +9,11 @@ public class GameManager : MonoBehaviour
     public GameObject startPanel;          // ゲーム開始時のパネル
     public GameObject endPanel;            // ゲーム終了時のパネル
     public Button startButton;             // ゲーム開始ボタン
-    public GameObject Title;
+    public GameObject title;               // ゲームタイトル表示用
     public TextMeshProUGUI countdownText;  // カウントダウンのテキスト
     public GameObject gameElements;        // ゲーム中の要素（非表示/表示用）
-    private DraggableItem[] draggableItems;  // DraggableItemへの参照を保持する配列
 
+    private DraggableItem[] draggableItems;  // DraggableItemへの参照を保持する配列
 
     [Header("Font Settings")]
     public TMP_FontAsset newFont;          // カウントダウンテキスト用のフォント
@@ -35,12 +35,12 @@ public class GameManager : MonoBehaviour
     {
         InitializeUI();
         InitializeGame();
-
-        // シーン内の全ての DraggableItem を取得
-        draggableItems = FindObjectsOfType<DraggableItem>();
+        CacheDraggableItems();
     }
 
+    /// <summary>
     /// ゲーム開始時のUIとボタン設定の初期化を行うメソッド。
+    /// </summary>
     private void InitializeUI()
     {
         // ゲーム要素を非表示、開始パネルを表示
@@ -48,16 +48,16 @@ public class GameManager : MonoBehaviour
         startPanel.SetActive(true);
         finishText.gameObject.SetActive(false);
 
-        // カウントダウンテキストのフォントとサイズを設定
+        // フォント設定を適用
         SetupFontSettings();
 
         // ボタンのクリックイベントを設定
-        startButton.onClick.AddListener(StartGameCountdown);
-        quitButton.onClick.AddListener(QuitGame);
-        retryButton.onClick.AddListener(RestartGame);
+        SetupButtonEvents();
     }
 
+    /// <summary>
     /// フォントの設定を行うメソッド。
+    /// </summary>
     private void SetupFontSettings()
     {
         if (newFont != null)
@@ -69,7 +69,19 @@ public class GameManager : MonoBehaviour
         finishText.fontSize = newFontSize;
     }
 
+    /// <summary>
+    /// ボタンのクリックイベントを設定するメソッド。
+    /// </summary>
+    private void SetupButtonEvents()
+    {
+        startButton.onClick.AddListener(StartGameCountdown);
+        quitButton.onClick.AddListener(QuitGame);
+        retryButton.onClick.AddListener(RestartGame);
+    }
+
+    /// <summary>
     /// ゲームロジックの初期設定を行うメソッド。
+    /// </summary>
     private void InitializeGame()
     {
         // タイムゲージの時間切れイベントに登録
@@ -80,19 +92,38 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;  // ゲーム開始時は通常速度
     }
 
+    /// <summary>
+    /// シーン内の全ての DraggableItem をキャッシュするメソッド。
+    /// </summary>
+    private void CacheDraggableItems()
+    {
+        draggableItems = FindObjectsOfType<DraggableItem>();
+    }
+
+    /// <summary>
     /// ゲーム開始時のカウントダウンを開始するメソッド。
+    /// </summary>
     public void StartGameCountdown()
     {
         Debug.Log("Start Button Pressed");
-        startButton.gameObject.SetActive(false);
-        Title.gameObject.SetActive(false);
-        endPanel.gameObject.SetActive(false);
-        quitPanel.SetActive(false);  // スタート時にQuitパネルを非表示
-
+        HideInitialUI();
         StartCoroutine(CountdownCoroutine());
     }
 
+    /// <summary>
+    /// ゲーム開始時の初期UIを非表示にするメソッド。
+    /// </summary>
+    private void HideInitialUI()
+    {
+        startButton.gameObject.SetActive(false);
+        title.gameObject.SetActive(false);
+        endPanel.gameObject.SetActive(false);
+        quitPanel.SetActive(false);
+    }
+
+    /// <summary>
     /// カウントダウンを実行するコルーチン。
+    /// </summary>
     private IEnumerator CountdownCoroutine()
     {
         countdownText.text = "Ready?";
@@ -105,7 +136,9 @@ public class GameManager : MonoBehaviour
         StartGame();
     }
 
+    /// <summary>
     /// ゲームの開始処理を行うメソッド。
+    /// </summary>
     private void StartGame()
     {
         countdownText.gameObject.SetActive(false);
@@ -123,7 +156,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
     /// ゲーム終了時に呼び出されるメソッド。ゲームの進行を停止する。
+    /// </summary>
     public void EndGame()
     {
         if (!isGameFinished)
@@ -131,8 +166,6 @@ public class GameManager : MonoBehaviour
             isGameFinished = true;
             Time.timeScale = 0;  // ゲームの進行を停止
             gameElements.SetActive(false);
-
-
 
             finishText.text = "Finish!";
             finishText.gameObject.SetActive(true);
@@ -143,25 +176,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
     /// ゲーム終了後、1秒待機してから終了ボタンを表示するコルーチン。
+    /// </summary>
     private IEnumerator ShowEndButtonsAfterDelay()
     {
         yield return new WaitForSecondsRealtime(1f); // 実時間で1秒待機
         finishText.gameObject.SetActive(false);
-
     }
 
+    /// <summary>
     /// ゲームをリスタートするメソッド。Retryボタン用。
+    /// </summary>
     public void RestartGame()
     {
         Debug.Log("Retry Button Pressed");
         ResetGame();
         StartGameCountdown();
-
     }
 
+    /// <summary>
     /// ゲームのリセット処理を行うメソッド。
+    /// </summary>
     private void ResetGame()
     {
         isGameFinished = false;  // ゲーム終了フラグをリセット
@@ -172,7 +208,7 @@ public class GameManager : MonoBehaviour
         startPanel.SetActive(true);
 
         // カウントダウンテキストをリセット
-        countdownText.gameObject.SetActive(true);  // カウントダウンテキストを表示
+        countdownText.gameObject.SetActive(true);
 
         if (orderManager != null)
         {
@@ -184,14 +220,23 @@ public class GameManager : MonoBehaviour
             timeGauge.ResetGauge();
         }
 
-        // DraggableItemのリセットを呼び出す
-        foreach (var draggableItem in FindObjectsOfType<DraggableItem>())
+        ResetDraggableItems();
+    }
+
+    /// <summary>
+    /// DraggableItemのリセットを行うメソッド。
+    /// </summary>
+    private void ResetDraggableItems()
+    {
+        foreach (var draggableItem in draggableItems)
         {
-            // 初期位置を再設定し、アイテムをリセット
             draggableItem.ResetItem();
         }
     }
+
+    /// <summary>
     /// ゲームを終了するメソッド。Quitボタン用。
+    /// </summary>
     private void QuitGame()
     {
         Debug.Log("Quit Button Pressed");
