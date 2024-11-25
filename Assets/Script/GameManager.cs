@@ -107,7 +107,6 @@ public class GameManager : MonoBehaviour
         if (timeGauge != null)
         {
             timeGauge.OnTimeUp += EndGame;
-            EndSound.PlayOneShot(EndSE, volumeScale);
 
         }
         Time.timeScale = 1;  // ゲーム開始時は通常速度
