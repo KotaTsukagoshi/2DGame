@@ -29,20 +29,15 @@ public class OrderManager : MonoBehaviour
 
     void Start()
     {
-      
     }
 
-    /// <summary>
     /// ゲーム開始時に注文を初期化し、最初の顧客を生成する。
-    /// </summary>
     public void InitializeOrders()
     {
         SpawnCustomer(); // ゲーム開始時に顧客を生成
     }
 
-    /// <summary>
     /// 指定されたスポーンエリア内のランダムな位置に新しい顧客を生成する。
-    /// </summary>
     private void SpawnCustomer()
     {
         RemoveExistingCustomer();
@@ -55,9 +50,7 @@ public class OrderManager : MonoBehaviour
         currentCustomer = newCustomer;
     }
 
-    /// <summary>
     /// 現在表示されている顧客がいれば削除する。
-    /// </summary>
     private void RemoveExistingCustomer()
     {
         if (currentCustomer != null)
@@ -66,9 +59,7 @@ public class OrderManager : MonoBehaviour
         }
     }
 
-    /// <summary>
     /// スポーンエリア内のランダムな位置を生成する。
-    /// </summary>
     /// <returns>スポーンエリア内のランダムなVector3座標。</returns>
     private Vector3 GetRandomSpawnPosition()
     {
@@ -78,9 +69,7 @@ public class OrderManager : MonoBehaviour
         return new Vector3(x, y, 0);
     }
 
-    /// <summary>
     /// 指定された位置に新しい顧客を生成する。
-    /// </summary>
     /// <param name="position">顧客をスポーンする位置。</param>
     /// <returns>生成されたCustomerオブジェクト。</returns>
     private Customer CreateNewCustomer(Vector3 position)
@@ -89,9 +78,7 @@ public class OrderManager : MonoBehaviour
         return Instantiate(customerPrefab, position, Quaternion.identity);
     }
 
-    /// <summary>
     /// 利用可能なリストからランダムな顧客プレハブを選択する。
-    /// </summary>
     /// <returns>ランダムなCustomerプレハブ。</returns>
     private Customer GetRandomCustomerPrefab()
     {
@@ -99,9 +86,7 @@ public class OrderManager : MonoBehaviour
         return customerPrefabs[randomIndex];
     }
 
-    /// <summary>
     /// 顧客の注文をランダムに生成し、表示を初期化する。
-    /// </summary>
     /// <param name="customer">設定する顧客。</param>
     private void SetupCustomerOrder(Customer customer)
     {
@@ -109,9 +94,7 @@ public class OrderManager : MonoBehaviour
         customer.SetupCustomer(customer.customerImage.sprite, order);
     }
 
-    /// <summary>
     /// このOrderManagerインスタンスを顧客のTrayDropZoneに設定する。
-    /// </summary>
     /// <param name="customer">設定する顧客オブジェクト。</param>
     private void AssignOrderManagerToTray(Customer customer)
     {
@@ -122,9 +105,7 @@ public class OrderManager : MonoBehaviour
         }
     }
 
-    /// <summary>
     /// 顧客のためにランダムな注文を生成する。
-    /// </summary>
     /// <returns>顧客の注文を表すSpriteのリスト。</returns>
     private List<Sprite> GenerateRandomOrder()
     {
@@ -136,10 +117,8 @@ public class OrderManager : MonoBehaviour
         return order;
     }
 
-    /// <summary>
     /// 指定されたアイテムが現在の顧客の注文の一部かどうかをチェックする。
     /// 注文が完了した場合、新しい顧客を生成する。
-    /// </summary>
     /// <param name="itemSprite">チェックするアイテムのSprite。</param>
     /// <returns>アイテムが注文の一部であればtrue、それ以外はfalse。</returns>
     public bool CheckOrder(Sprite itemSprite)

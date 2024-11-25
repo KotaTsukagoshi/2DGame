@@ -23,9 +23,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         SetInitialPosition(); // 初期位置を保存
     }
 
-    /// <summary>
     /// 必要なコンポーネントを初期化する。
-    /// </summary>
     private void InitializeComponents()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -38,9 +36,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
-    /// <summary>
     /// ボタンを押し込んだ瞬間の処理。
-    /// </summary>
     /// <param name="eventData">クリックイベントデータ。</param>
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -51,9 +47,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         }
     }
 
-    /// <summary>
     /// クリック時に呼び出される処理。
-    /// </summary>
     /// <param name="eventData">クリックイベントデータ。</param>
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -61,9 +55,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         Debug.Log("アイテムがクリックされました。");
     }
 
-    /// <summary>
     /// 初期位置を保存するメソッド。
-    /// </summary>
     private void SetInitialPosition()
     {
         initialStartPosition = rectTransform.position;
@@ -71,9 +63,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         Debug.Log($"[SetInitialPosition] initialStartPosition set to: {initialStartPosition}");
     }
 
-    /// <summary>
     /// ドラッグ開始時の処理。
-    /// </summary>
     /// <param name="eventData">ドラッグイベントデータ。</param>
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -81,9 +71,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         canvasGroup.blocksRaycasts = false;
     }
 
-    /// <summary>
     /// ドラッグ中の処理。
-    /// </summary>
     /// <param name="eventData">ドラッグイベントデータ。</param>
     public void OnDrag(PointerEventData eventData)
     {
@@ -91,9 +79,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         rectTransform.anchoredPosition += eventData.delta;
     }
 
-    /// <summary>
     /// ドラッグ終了時の処理。
-    /// </summary>
     /// <param name="eventData">ドラッグイベントデータ。</param>
     public void OnEndDrag(PointerEventData eventData)
     {
@@ -102,18 +88,14 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         ResetPosition(); // アイテムを元の位置に戻す
     }
 
-    /// <summary>
     /// アイテムを初期位置にリセットするメソッド。
-    /// </summary>
     public void ResetPosition()
     {
         rectTransform.position = initialStartPosition;
         Debug.Log($"[ResetPosition] Reset to initialStartPosition: {initialStartPosition}");
     }
 
-    /// <summary>
     /// ゲームのリセット時に呼び出されるメソッド。
-    /// </summary>
     public void ResetItem()
     {
         SetInitialPosition(); // 初期位置を再設定
