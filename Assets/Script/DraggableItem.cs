@@ -2,10 +2,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(RectTransform), typeof(CanvasGroup))]
-public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler, IPointerDownHandler
 {
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
+
+    private float volumeScale = 1.0f;
+
+    public AudioSource audioSource;
+    public AudioClip audioClip;
 
     // ゲーム開始時の初期位置を保持
     private Vector3 initialStartPosition;
@@ -25,6 +30,35 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
+
+        // AudioSource の初期化がされていない場合はエラーを防ぐ
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+    }
+
+    /// <summary>
+    /// ボタンを押し込んだ瞬間の処理。
+    /// </summary>
+    /// <param name="eventData">クリックイベントデータ。</param>
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        // ボタンを押し込んだ瞬間に音を再生
+        if (audioClip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(audioClip, volumeScale);
+        }
+    }
+
+    /// <summary>
+    /// クリック時に呼び出される処理。
+    /// </summary>
+    /// <param name="eventData">クリックイベントデータ。</param>
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // クリック時に何かを処理する場合
+        Debug.Log("アイテムがクリックされました。");
     }
 
     /// <summary>

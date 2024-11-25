@@ -29,13 +29,25 @@ public class GameManager : MonoBehaviour
     public OrderManager orderManager;      // OrderManagerへの参照
     public TimeGauge timeGauge;            // TimeGaugeの参照
 
+    [Header("BGM")]
+    public AudioClip audioClip;
+    public AudioSource audioSource;
+
     private bool isGameFinished = false;   // ゲームが終了したかどうかのフラグ
+
+
 
     void Start()
     {
         InitializeUI();
         InitializeGame();
         CacheDraggableItems();
+
+        // AudioSource の初期化
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.clip = audioClip;
+        audioSource.loop = true; // ループ再生したい場合
+        audioSource.Play();      // ゲーム開始時に再生
     }
 
     /// <summary>
@@ -75,6 +87,7 @@ public class GameManager : MonoBehaviour
     private void SetupButtonEvents()
     {
         startButton.onClick.AddListener(StartGameCountdown);
+
         quitButton.onClick.AddListener(QuitGame);
         retryButton.onClick.AddListener(RestartGame);
     }
@@ -105,6 +118,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void StartGameCountdown()
     {
+
         Debug.Log("Start Button Pressed");
         HideInitialUI();
         StartCoroutine(CountdownCoroutine());
@@ -119,6 +133,12 @@ public class GameManager : MonoBehaviour
         title.gameObject.SetActive(false);
         endPanel.gameObject.SetActive(false);
         quitPanel.SetActive(false);
+        // 音声を停止
+        if (audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
+
     }
 
     /// <summary>
@@ -131,6 +151,7 @@ public class GameManager : MonoBehaviour
 
         countdownText.text = "GO!";
         yield return new WaitForSeconds(1f);
+
 
         // カウントダウン終了後の処理
         StartGame();
@@ -193,6 +214,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Retry Button Pressed");
         ResetGame();
         StartGameCountdown();
+
     }
 
     /// <summary>
