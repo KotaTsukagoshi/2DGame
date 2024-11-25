@@ -22,11 +22,14 @@ public class OrderManager : MonoBehaviour
 
     public TimeGauge timeGauge;  // TimeGaugeへの参照
 
+    private float volumeScale = 1.0f;
+    public AudioSource audioSource;
+    public AudioClip audioClip;
+
 
     void Start()
     {
-        // TimeGaugeを取得して設定
-        timeGauge = FindObjectOfType<TimeGauge>();  // シーン内のTimeGaugeコンポーネントを探して設定
+      
     }
 
     /// <summary>
@@ -152,6 +155,7 @@ public class OrderManager : MonoBehaviour
                 SpawnCustomer();
                 // 正しい注文が完了した場合、タイムゲージを1秒回復
                 timeGauge.RecoverTime(-1f);
+                audioSource.PlayOneShot(audioClip, volumeScale);
             }
             return true;
         }

@@ -30,11 +30,17 @@ public class GameManager : MonoBehaviour
     public TimeGauge timeGauge;            // TimeGaugeの参照
 
     [Header("BGM")]
-    public AudioClip audioClip;
+    public AudioClip BGM;
     public AudioSource audioSource;
 
-    private bool isGameFinished = false;   // ゲームが終了したかどうかのフラグ
+    [Header("SE")]
+    public AudioClip StartSE;
+    public AudioSource StartSound;
+    public AudioClip EndSE;
+    public AudioSource EndSound;
 
+    private bool isGameFinished = false;   // ゲームが終了したかどうかのフラグ
+    private float volumeScale = 1.0f;
 
 
     void Start()
@@ -45,7 +51,7 @@ public class GameManager : MonoBehaviour
 
         // AudioSource の初期化
         audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.clip = audioClip;
+        audioSource.clip = BGM;
         audioSource.loop = true; // ループ再生したい場合
         audioSource.Play();      // ゲーム開始時に再生
     }
@@ -101,6 +107,8 @@ public class GameManager : MonoBehaviour
         if (timeGauge != null)
         {
             timeGauge.OnTimeUp += EndGame;
+            EndSound.PlayOneShot(EndSE, volumeScale);
+
         }
         Time.timeScale = 1;  // ゲーム開始時は通常速度
     }
@@ -118,7 +126,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void StartGameCountdown()
     {
-
+        StartSound.PlayOneShot(StartSE, volumeScale);
         Debug.Log("Start Button Pressed");
         HideInitialUI();
         StartCoroutine(CountdownCoroutine());
