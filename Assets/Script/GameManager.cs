@@ -39,9 +39,12 @@ public class GameManager : MonoBehaviour
     public AudioClip EndSE;
     public AudioSource EndSound;
 
+    [Header("Score")]
+    public TextMeshProUGUI ScoreText;
+
     private bool isGameFinished = false;   // ゲームが終了したかどうかのフラグ
     private float volumeScale = 1.0f;
-
+    private int Score = 0;
 
     void Start()
     {
@@ -105,6 +108,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// シーン内の全ての DraggableItem をキャッシュするメソッド。
+    [System.Obsolete]
     private void CacheDraggableItems()
     {
         draggableItems = FindObjectsOfType<DraggableItem>();
@@ -240,5 +244,19 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Quit Button Pressed");
         Application.Quit();  // ゲームを終了
+    }
+
+    public void AddScore(int points)
+    {
+        Score += points;
+        Debug.Log("Score updated to: " + Score);  // スコアの値を確認
+        UpdateScoreText();
+    }
+    private void UpdateScoreText()
+    {
+        if (ScoreText != null)
+        {
+            ScoreText.text = "Score: " + Score.ToString();  // スコアをテキストに反映
+        }
     }
 }

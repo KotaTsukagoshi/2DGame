@@ -16,10 +16,8 @@ public class Customer : MonoBehaviour
     // ドロップトレイへの参照、注文アイテムのドラッグ&ドロップを管理
     public TrayDropZone trayDropZone;
 
-    /// <summary>
     /// 顧客の注文内容をUIに表示するメソッド。
     /// orderSlotsにorderItemsを割り当てて、必要なスロットのみ表示します。
-    /// </summary>
     public void DisplayOrder()
     {
         for (int i = 0; i < orderSlots.Count; i++)
@@ -38,10 +36,8 @@ public class Customer : MonoBehaviour
         }
     }
 
-    /// <summary>
     /// 顧客の画像と注文を設定するメソッド。
     /// 新しい顧客の画像と注文リストを設定し、表示を更新します。
-    /// </summary>
     /// <param name="newImage">顧客の画像</param>
     /// <param name="newOrderItems">注文アイテムのリスト</param>
     public void SetupCustomer(Sprite newImage, List<Sprite> newOrderItems)

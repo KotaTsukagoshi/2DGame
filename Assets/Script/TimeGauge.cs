@@ -23,10 +23,8 @@ public class TimeGauge : MonoBehaviour
         UpdateGauge();  // ゲージの更新
     }
 
-    /// <summary>
     /// ゲージを初期化するメソッド。
     /// ゲージが空からスタートするように設定。
-    /// </summary>
     private void InitializeGauge()
     {
         if (progressBar != null)
@@ -41,10 +39,8 @@ public class TimeGauge : MonoBehaviour
         ResetGauge();
     }
 
-    /// <summary>
     /// ゲージの進行を管理するメソッド。
     /// 経過時間に応じてゲージを増加させ、時間切れイベントを発生させる。
-    /// </summary>
     private void UpdateGauge()
     {
         // ゲージが有効であり、まだ満タンでない場合のみ進行
@@ -63,26 +59,20 @@ public class TimeGauge : MonoBehaviour
         }
     }
 
-    /// <summary>
     /// ゲージのfillAmountを更新するメソッド。
-    /// </summary>
     private void UpdateProgressBar()
     {
         progressBar.fillAmount = currentTime / maxTime;
     }
 
-    /// <summary>
     /// ゲージが満タンになった時の処理。
     /// 時間切れイベントを呼び出す。
-    /// </summary>
     private void HandleTimeUp()
     {
         OnTimeUp?.Invoke();  // 時間切れイベントを発生
     }
 
-    /// <summary>
     /// ゲージをリセットし、再スタートさせるメソッド。
-    /// </summary>
     public void ResetGauge()
     {
         currentTime = 0f;

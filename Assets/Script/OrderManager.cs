@@ -1,9 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.Events;
+using TMPro;
+
 
 public class OrderManager : MonoBehaviour
 {
+
     [Header("設定")]
     [Tooltip("注文可能なすべてのアイテムリスト")]
     public List<Sprite> possibleItems; // 全ての注文可能なアイテムのリスト
@@ -25,10 +29,15 @@ public class OrderManager : MonoBehaviour
     private float volumeScale = 1.0f;
     public AudioSource audioSource;
     public AudioClip audioClip;
-
+    public GameManager gameManager;  // GameManagerへの参照
+    public TextMeshProUGUI ScoreText; // TextをTextMeshProUGUIに変更
 
     void Start()
     {
+        if (gameManager == null)
+        {
+            Debug.LogError("GameManager が設定されていません。Inspectorで設定してください。");
+        }
     }
 
     /// ゲーム開始時に注文を初期化し、最初の顧客を生成する。
@@ -123,6 +132,7 @@ public class OrderManager : MonoBehaviour
     /// <returns>アイテムが注文の一部であればtrue、それ以外はfalse。</returns>
     public bool CheckOrder(Sprite itemSprite)
     {
+
         if (currentCustomer != null && currentCustomer.orderItems.Contains(itemSprite))
         {
             currentCustomer.orderItems.Remove(itemSprite);
@@ -140,4 +150,20 @@ public class OrderManager : MonoBehaviour
         }
         return false;
     }
+    // オーダーのチェックを行うメソッド
+    public void GetScore(Sprite itemSprite)
+    {
+        bool isOrderCorrect = CheckOrder(itemSprite); // 正解かどうかの判定
+
+        if (isOrderCorrect)
+        {
+            Debug.Log("正解の注文です。スコアを加算します。");
+            gameManager.AddScore(10);  // 正解のとき、10点を加算
+        }
+        else
+        {
+            Debug.Log("注文が正しくありません。");
+        }
+    }
+
 }
